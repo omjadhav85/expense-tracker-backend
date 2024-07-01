@@ -1,4 +1,5 @@
 import User from '../models/userModel.js';
+import generateToken from '../utils/generateToken.js';
 
 export const signupController = async (req, res, next) => {
   const { name, email, password, pic } = req.body;
@@ -30,7 +31,7 @@ export const signupController = async (req, res, next) => {
       email: user.email,
       isAdmin: user.isAdmin,
       pic: user.pic,
-      //   token: generateToken(user._id),
+      token: generateToken(user._id),
     });
   } else {
     res.status(500);
@@ -63,6 +64,7 @@ export const loginController = async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       pic: user.pic,
+      token: generateToken(user._id),
     });
   } else {
     res.status(401);
