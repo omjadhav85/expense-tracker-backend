@@ -7,15 +7,10 @@ export const signupController = async (req, res, next) => {
   //   check if a user with same email exists or not already
   const userExists = await User.findOne({ email });
 
-  console.log('user: ', userExists);
-
   if (userExists) {
-    console.log('user already exists...stop');
     res.status(400);
     throw new Error('User already exists');
   }
-
-  console.log('user is new, continue...');
 
   const user = await User.create({
     name,

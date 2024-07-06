@@ -4,7 +4,9 @@ import { expenses } from './data/expenses.js';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
 import { errorHandler, notFound } from './middlewares/errorMiddlewares.js';
+import { isAuthenticated } from './middlewares/isAuthenticated.js';
 
 await connectDB();
 
@@ -15,16 +17,9 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json());
 app.use(cors());
 
-app.get('/api/expenses', (req, res) => {
-  res.json(expenses);
-});
-
-app.get('/api/expenses/:id', (req, res) => {
-  const expense = expenses.find((obj) => obj._id === req.params.id);
-  res.json(expense);
-});
-
 app.use('/api/users', userRoutes);
+
+app.use('/api/expenses', isAuthenticated, expenseRoutes);
 
 // Error Handling middlewares
 app.use(notFound);
