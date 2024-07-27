@@ -1,8 +1,24 @@
+import { endOfMonth, startOfMonth } from 'date-fns';
 import Expense from '../models/expenseModel.js';
 
 export const getAllExpenseController = async (req, res, next) => {
+  const { month, year } = req.query;
+
+  if (!month || !year) {
+    res.status(400);
+
+    throw new Error('Month and year are required');
+  }
+
+  const startDate = startOfMonth(new Date(year, month - 1));
+  const endDate = endOfMonth(new Date(year, month - 1));
+
   const response = await Expense.find({
     user: req.user._id,
+    createdAt: {
+      $gte: startDate,
+      $lte: endDate,
+    },
   });
   res.status(200).json(response);
 };
