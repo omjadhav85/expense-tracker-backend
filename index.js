@@ -25,6 +25,13 @@ app.get("/", (req, res) => {
   res.json({ msg: "Welcome to expense tracker api service" });
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({
+    msg: "Hello from expense tracker backend",
+    time: new Date().toISOString(),
+  });
+});
+
 // Error Handling middlewares
 app.use(notFound);
 app.use(errorHandler);
